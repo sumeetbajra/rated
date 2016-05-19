@@ -4,8 +4,6 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var jwt = require('jsonwebtoken');
-var config = require('./config');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -44,35 +42,7 @@ app.use(function (req, res, next) {
     // Set to true if you need the website to include cookies in the requests sent
     // to the API (e.g. in case you use sessions)
     //res.setHeader('Access-Control-Allow-Credentials', true);
-    
-    if(req.path != '/users/login' && req.path != '/users/register') {
-
-      // Pass to next layer of middleware
-      var token = req.headers['authorization'];
-      if (token) {
-
-        // verifies secret and checks exp
-        jwt.verify(token, config.TOKEN_SECRET, function(err, decoded) {      
-          if (err) {
-            return res.json({ success: false, message: 'Failed to authenticate token.' });    
-          } else {
-          // if everything is good, save to request for use in other routes
-            req.decoded = decoded;    
-          }
-        });
-
-      } else {
-
-        // if there is no token
-        // return an error
-        return res.json({ 
-          error: true,
-          message: 'NO_TOKEN_PROVIDED'
-        });
-
-      }
-    }
-    next();
+    next();    
 });
 
 app.use('/', routes);
