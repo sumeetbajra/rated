@@ -48,6 +48,18 @@ router.get('/:id', function(req, res) {
             res.json({error: false, res: docs});
         }
     });
+});
+
+router.put('/:id', function(req, res) {
+    if(req.body) {
+        Movies.update({_id: req.params.id}, req.body, function(err, docs) {
+            if(err) {
+                res.json({error: true, res: err});
+            }else{
+                res.json({error: false, success: true});
+            }
+        });
+    }
 })
 
 router.post('/latest', function(req, res) {
