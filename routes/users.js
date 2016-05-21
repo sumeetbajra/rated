@@ -3,21 +3,17 @@ var router = express.Router();
 var Users = require('../models/Users');
 var jwt = require('jsonwebtoken');
 var config = require('../config.js');
+var checkToken = require('../utils/checkToken');
 
 var transporter = require('../utils/smtp');
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-    var user = new Users({
-        firstName: 'Sumit',
-        lastName: 'Bajracharya',
-        address: 'Chhetrapati, Kathmandu',
-        email: 'sumeetbajra@gmail.com',
-        username: 'sumeetbajra',
-        password: 'password'
-    })
-    user.save(function(err, doc) {
-        if (err) console.log(err);
-        console.log(doc);
+router.get('/:id', checkToken, function(req, res, next) {
+    Users.findOne({_id: req.params.id}, function(err, doc) {
+        if(err) res.end({error: true, res: err});
+        res.json({
+            error: false,
+            res: doc
+        })
     })
 });
 
@@ -88,7 +84,7 @@ router.post('/login', function(req, res) {
                     }
                 });
             }else {
-                res.json({error: true, res: 'Invalid username or password'});
+                res.json({error: true, message: 'Invalid username or password'});
             }
         });
     }

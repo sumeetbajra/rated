@@ -9,7 +9,7 @@ function checkToken(req, res, next) {
         // verifies secret and checks exp
         jwt.verify(token, config.TOKEN_SECRET, function(err, decoded) {      
           if (err) {
-            res.send({ success: false, message: 'AUTHENTICATION_ERROR' });    
+            res.send({ error: true, message: 'AUTHENTICATION_ERROR' });    
           } else {
           // if everything is good, save to request for use in other routes
             req.decoded = decoded;    
