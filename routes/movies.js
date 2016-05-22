@@ -41,11 +41,11 @@ router.delete('/:id', checkToken, function(req, res) {
 });
 
 router.get('/:id', function(req, res) {
-    Movies.find({_id: req.params.id}, function(err, docs) {
+    Movies.findOne({_id: req.params.id}).populate('ratings.userId', 'username').exec(function(err, doc) {
         if(err) {
             res.json({error: true, res: err});
         }else{
-            res.json({error: false, res: docs});
+            res.json({error: false, res: doc});
         }
     });
 });

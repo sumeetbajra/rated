@@ -4,6 +4,13 @@ var validators = require('mongoose-validators');
 var Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId;
 
+var Ratings = new Schema({
+    rating: {type: String},
+    review: {type: String},
+    userId: {type: String, ref: 'Users'},
+    timestamp: {type: Date, default: Date.now}
+});
+
 var Movies = new Schema({
     movieId: ObjectId,
     title: {type: String, validate: [validators.isLength(1, 60)]},
@@ -15,6 +22,7 @@ var Movies = new Schema({
     trailer: {type: String},
     posterUrl: {type: String},
     coverUrl: {type: String},
+    ratings: [Ratings],
     timestamp: {type: Date, default: Date.now}    
 });
 
