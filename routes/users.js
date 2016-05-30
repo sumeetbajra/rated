@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var Users = require('../models/Users');
+var Movies = require('../models/Movies');
 var jwt = require('jsonwebtoken');
 var config = require('../config.js');
 var checkToken = require('../utils/checkToken');
@@ -9,6 +10,16 @@ var transporter = require('../utils/smtp');
 /* GET users listing. */
 router.get('/:id', checkToken, function(req, res, next) {
     Users.findOne({_id: req.params.id}, function(err, doc) {
+        if(err) res.end({error: true, res: err});
+        res.json({
+            error: false,
+            res: doc
+        })
+    })
+});
+
+router.get('/ratings/:id', checkToken, function(req, res, next) {
+    Movies.find({'ratings' : { $elemMatch: {'userId' : req.params.id}}}, function(err, doc) {
         if(err) res.end({error: true, res: err});
         res.json({
             error: false,

@@ -14,7 +14,7 @@ var Ratings = new Schema({
 var Movies = new Schema({
     movieId: ObjectId,
     title: {type: String, validate: [validators.isLength(1, 60)]},
-    description: {type: String, validate: [validators.isLength(1, 300)]},
+    description: {type: String, validate: [validators.isLength(1, 1000)]},
     year: {type: Number, validate: [validators.isLength(1, 4)]},
     director: {type: String},
     cast: {type: String},
