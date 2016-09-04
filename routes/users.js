@@ -39,23 +39,23 @@ router.post('/register', function(req, res, next) {
 
                 var response = Object.assign({}, doc)._doc;              
 
-                var mailOptions = {
-                    from: '"Rated" <rated@example.com>', // sender address
-                    to: response.email, // list of receivers
-                    subject: 'Verify your account', // Subject line
-                    text: 'http://localhost:8080/users/verify?token=' + response.verificationToken + '&userId=' + response._id, // plaintext body
-                };
+                // var mailOptions = {
+                //     from: '"Rated" <rated@example.com>', // sender address
+                //     to: response.email, // list of receivers
+                //     subject: 'Verify your account', // Subject line
+                //     text: 'http://localhost:8080/users/verify?token=' + response.verificationToken + '&userId=' + response._id, // plaintext body
+                // };
 
-                // send mail with defined transport object
-                transporter.sendMail(mailOptions, function(error, info){
-                    if(error){
-                        return console.log(error);
-                    }
+                // // send mail with defined transport object
+                // transporter.sendMail(mailOptions, function(error, info){
+                //     if(error){
+                //         return console.log(error);
+                //     }
                     delete response.verificationToken;
                     delete response.password;
                     delete response._v;
                     res.json({error: false, res: response});
-                });
+                //});
             }
         })
     }
