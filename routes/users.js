@@ -28,36 +28,50 @@ router.get('/ratings/:id', checkToken, function(req, res, next) {
     })
 });
 
+var registerUser = function(res, userData) {
+    var user = new Users(userData);
+    user.save(function(err, doc) {
+        if (err) { 
+            console.log(err);
+            res.json({error: true, res: err});
+            res.end();
+        }else {
+            var response = Object.assign({}, doc)._doc;              
+            delete response.verificationToken;
+            delete response.password;
+            delete response._v;
+            var token = jwt.sign(response, config.TOKEN_SECRET, {
+                expiresIn: 1440 // expires in 24 hours
+            });
+            res.json({error: false, res: {
+                    user: response,
+                    token: token
+                }
+            });
+        }
+    })
+}
+
 router.post('/register', function(req, res, next) {
     if(req.body) {
-        var user = new Users(req.body);
-        user.save(function(err, doc) {
-            if (err) { 
-                console.log(err);
-                res.json({error: true, res: err});
-            }else {
-
-                var response = Object.assign({}, doc)._doc;              
-
-                // var mailOptions = {
-                //     from: '"Rated" <rated@example.com>', // sender address
-                //     to: response.email, // list of receivers
-                //     subject: 'Verify your account', // Subject line
-                //     text: 'http://localhost:8080/users/verify?token=' + response.verificationToken + '&userId=' + response._id, // plaintext body
-                // };
-
-                // // send mail with defined transport object
-                // transporter.sendMail(mailOptions, function(error, info){
-                //     if(error){
-                //         return console.log(error);
-                //     }
-                    delete response.verificationToken;
-                    delete response.password;
-                    delete response._v;
-                    res.json({error: false, res: response});
-                //});
-            }
-        })
+        if(req.body.fbId) {
+            Users.find({fbId: req.body.fbId}, function(err, doc) {
+                if(doc.length) {
+                     var token = jwt.sign(doc[0], config.TOKEN_SECRET, {
+                        expiresIn: 1440 // expires in 24 hours
+                    });
+                    res.json({error: false, res: {
+                            user: doc[0],
+                            token: token
+                        }
+                    });
+                }else {
+                    registerUser(res, req.body);
+                }
+            })
+        }else {
+            registerUser(res, req.body);
+        }
     }
 });
 

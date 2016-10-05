@@ -41,7 +41,7 @@ router.delete('/:id', checkToken, function(req, res) {
 });
 
 router.get('/:id', function(req, res) {
-    Movies.findOne({_id: req.params.id}).populate('ratings.userId', 'username').exec(function(err, doc) {
+    Movies.findOne({_id: req.params.id}).populate('ratings.userId').exec(function(err, doc) {
         if(err) {
             res.json({error: true, res: err});
         }else{

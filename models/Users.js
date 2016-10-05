@@ -14,8 +14,11 @@ var Users = new Schema({
     username: {type: String, validate: [validators.isLength(1, 60)]},
     password: {type: String, validate: [validators.isLength(1, 100)]},
     timestamp: {type: Date, default: Date.now},
+    fbId: {type: Number},
+    profilePic: {type: String, default: "https://world-outreach.com/wp-content/uploads/2014/08/placeholder-profile-male.jpg"},
     verified: {type: Boolean, default: false},
-    verificationToken: {type: String, default: token}
+    verificationToken: {type: String, default: token},
+    role: {type: String, default: 'user'}
 });
 
 module.exports =  mongoose.model('Users', Users);
