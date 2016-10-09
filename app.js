@@ -8,6 +8,7 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var movies = require('./routes/movies');
+var celebrity = require('./routes/celebrity');
 var ratings = require('./routes/ratings');
 
 var app = express();
@@ -50,6 +51,7 @@ app.use('/', routes);
 app.use('/users', users);
 app.use('/movies', movies);
 app.use('/ratings', ratings);
+app.use('/celebrity', celebrity);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

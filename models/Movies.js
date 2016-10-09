@@ -11,13 +11,17 @@ var Ratings = new Schema({
     timestamp: {type: Date, default: Date.now}
 });
 
+var Celebrities = new Schema({
+    celebrityId: {type: String, ref: 'Celebrity'}
+})
+
 var Movies = new Schema({
     movieId: ObjectId,
     title: {type: String, validate: [validators.isLength(1, 60)]},
     description: {type: String, validate: [validators.isLength(1, 1000)]},
     year: {type: Number, validate: [validators.isLength(1, 4)]},
-    director: {type: String},
-    cast: {type: String},
+    director: [Celebrities],
+    cast: [Celebrities],
     duration: {type: Number, validate: [validators.isLength(1, 10)]},
     trailer: {type: String},
     posterUrl: {type: String},

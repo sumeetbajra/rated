@@ -11,7 +11,7 @@ router.put('/add/:id', checkToken, function(req, res) {
             if(err) {
                 res.send({error: true, message: err});
             }else {
-                Movies.findOne({_id: req.params.id}).populate('ratings.userId').exec(function(err, doc) {
+                Movies.findOne({_id: req.params.id}).populate('ratings.userId').populate('cast.celebrityId').populate('director.celebrityId').exec(function(err, doc) {
                     res.json({error: false, res: doc});
                 })
             }
@@ -26,7 +26,7 @@ router.put('/update/:id', checkToken, function(req, res) {
             if(err) {
                 res.send({error: true, message: err});
             }else {
-                Movies.findOne({_id: req.params.id}).populate('ratings.userId').exec(function(err, doc) {
+                Movies.findOne({_id: req.params.id}).populate('ratings.userId').populate('cast.celebrityId').populate('director.celebrityId').exec(function(err, doc) {
                     res.json({error: false, res: doc});
                 })
             }
