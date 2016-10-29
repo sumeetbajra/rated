@@ -77,15 +77,8 @@ router.post('/best', function(req, res) {
         if(err) {
             res.json({error: true, res: err});
         }else{
-            function getRating(ratings) {
-                var sum = 0
-                for (var i = ratings.length - 1; i >= 0; i--) {
-                    sum += +ratings[i].rating;
-                }
-                return Math.round((sum/ratings.length)*2)/2;
-            }
             docs.sort(function(a, b) {
-                return getRating(b.ratings) - getRating(a.ratings);
+                return b.overallRating - a.overallRating;
             });
             res.json({error: false, res: docs.slice(0, 10)});
         }

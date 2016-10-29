@@ -27,6 +27,8 @@ var Movies = new Schema({
     posterUrl: {type: String},
     coverUrl: {type: String},
     ratings: [Ratings],
+    overallRating: {type: Number, default: 0},
+    ratingsCount: {type: Number, default: 0},
     timestamp: {type: Date, default: Date.now}    
 });
 
