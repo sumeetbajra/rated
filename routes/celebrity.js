@@ -5,6 +5,20 @@ var checkToken = require('../utils/checkToken');
 var Celebrity = require('../models/Celebrity');
 var Movies = require('../models/Movies');
 
+router.post('/add', checkToken, function(req, res) {
+    if(req.body) {
+        var celebrity = new Celebrity(req.body);
+
+        celebrity.save(function(err, doc) {
+            if(err) {
+                res.json({error: true, res: err});
+            }else {
+                res.json({error: false, res: doc});
+            }
+        })
+    }
+});
+
 router.get('/search/:q', function(req, res) {
 	Celebrity.find({fullName: {$regex: "^" + req.params.q, $options: 'i'}})
 		.limit(10)
@@ -14,7 +28,7 @@ router.get('/search/:q', function(req, res) {
 });
 
 router.get('/all/:page', checkToken, function(req, res) {
-    Celebrity.paginate({}, {page: req.params.page, limit: 10}, function(err, doc) {
+    Celebrity.paginate({}, {page: req.params.page, limit: 10, sort: {_id: '-1'}}, function(err, doc) {
         if(err) {
           res.json({error: true, res: {msg: 'NOT_FOUND'}});
         }else {

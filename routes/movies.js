@@ -12,14 +12,16 @@ router.post('/add', checkToken, function(req, res) {
             if(err) {
                 res.json({error: true, res: err});
             }else {
-                res.json({error: false, res: doc});
+                Movies.findOne({_id: doc._id}).populate('ratings.userId').populate('cast.celebrityId').populate('director.celebrityId').exec(function(err, doc) {
+                    res.json({error: false, res: doc});
+                });
             }
         })
     }
 });
 
 router.get('/all/:page', checkToken, function(req, res) {
-    Movies.paginate({}, {page: req.params.page, limit: 5, populate: ['cast.celebrityId', 'director.celebrityId']}).then(function(docs) {
+    Movies.paginate({}, {page: req.params.page, limit: 5, sort: {_id: '-1'}, populate: ['cast.celebrityId', 'director.celebrityId']}).then(function(docs) {
         res.json({error: false, res: docs});
     })
 })
