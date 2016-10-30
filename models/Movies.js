@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var validators = require('mongoose-validators');
+var mongoosePaginate = require('mongoose-paginate');
 
 var Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId;
@@ -31,5 +32,7 @@ var Movies = new Schema({
     ratingsCount: {type: Number, default: 0},
     timestamp: {type: Date, default: Date.now}    
 });
+
+Movies.plugin(mongoosePaginate);
 
 module.exports =  mongoose.model('Movies', Movies);

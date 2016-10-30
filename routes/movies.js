@@ -18,13 +18,9 @@ router.post('/add', checkToken, function(req, res) {
     }
 });
 
-router.get('/', checkToken, function(req, res) {
-    Movies.find({}).populate('cast.celebrityId').populate('director.celebrityId').exec(function(err, docs) {
-        if(err) {
-            res.json({error: true, res: err});
-        }else {
-            res.json({error: false, res: docs});
-        }
+router.get('/all/:page', checkToken, function(req, res) {
+    Movies.paginate({}, {page: req.params.page, limit: 5, populate: ['cast.celebrityId', 'director.celebrityId']}).then(function(docs) {
+        res.json({error: false, res: docs});
     })
 })
 

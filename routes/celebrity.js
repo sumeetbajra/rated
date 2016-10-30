@@ -13,7 +13,20 @@ router.get('/search/:q', function(req, res) {
        	});
 });
 
-router.get('/:id', function(req, res) {
+router.get('/all/:page', checkToken, function(req, res) {
+    Celebrity.paginate({}, {page: req.params.page, limit: 10}, function(err, doc) {
+        if(err) {
+          res.json({error: true, res: {msg: 'NOT_FOUND'}});
+        }else {
+          res.json({
+              error: false,
+              res: doc
+          })
+        }
+    })
+});
+
+router.get('/:id', checkToken, function(req, res) {
     Celebrity.findOne({_id: req.params.id}, function(err, doc) {
         if(err) {
           res.json({error: true, res: {msg: 'NOT_FOUND'}});
@@ -26,7 +39,7 @@ router.get('/:id', function(req, res) {
     })
 });
 
-router.get('/movies/rated/:id', function(req, res) {
+router.get('/movies/rated/:id', checkToken, function(req, res) {
   Movies.find( {$or: [{'cast.celebrityId': req.params.id}, {'director.celebrityId': req.params.id}]}, function(err, docs) {
     if(err) {
         res.json({error: true, res: {msg: 'NOT_FOUND'}});
@@ -42,7 +55,7 @@ router.get('/movies/rated/:id', function(req, res) {
     })
 });
 
-router.get('/movies/:id', function(req, res) {
+router.get('/movies/:id', checkToken, function(req, res) {
   Movies.find( {$or: [{'cast.celebrityId': req.params.id}, {'director.celebrityId': req.params.id}]}, function(err, docs) {
     if(err) {
         res.json({error: true, res: {msg: 'NOT_FOUND'}});

@@ -13,6 +13,7 @@
     "jade": "~1.11.0",
     "jsonwebtoken": "^6.2.0",
     "mongoose": "^4.4.13",
+    "mongoose-paginate": "^5.0.3",
     "mongoose-validators": "^0.1.0",
     "morgan": "~1.6.1",
     "nodemailer": "^2.3.2",
