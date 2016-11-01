@@ -15,7 +15,7 @@ var app = express();
 
 //define mongoose database
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/rated');
+mongoose.connect('mongodb://root:password123@ds031628.mlab.com:31628/rated');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
