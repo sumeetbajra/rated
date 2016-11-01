@@ -41,7 +41,7 @@ var registerUser = function(res, userData) {
             delete response.password;
             delete response._v;
             var token = jwt.sign(response, config.TOKEN_SECRET, {
-                expiresIn: 1440 // expires in 24 hours
+                expiresIn: 644000 // expires in 24 hours
             });
             res.json({error: false, res: {
                     user: response,
