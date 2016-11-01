@@ -24,7 +24,7 @@ router.get('/all/:page', checkToken, function(req, res) {
     Movies.paginate({}, {page: req.params.page, limit: 5, sort: {_id: '-1'}, populate: ['cast.celebrityId', 'director.celebrityId']}).then(function(docs) {
         res.json({error: false, res: docs});
     })
-})
+});
 
 router.delete('/:id', checkToken, function(req, res) {
     Movies.find({_id: req.params.id}).remove(function(err, docs) {
@@ -58,7 +58,7 @@ router.put('/:id', function(req, res) {
             }
         });
     }
-})
+});
 
 router.post('/latest', function(req, res) {
     Movies.find({}).sort({timestamp: '-1'}).limit(10).exec(function(err, docs) {
