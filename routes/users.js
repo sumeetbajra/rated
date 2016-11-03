@@ -119,9 +119,9 @@ router.post('/verifyToken', function(req, res) {
     if(req.body.token) {
         jwt.verify(req.body.token, config.TOKEN_SECRET, function(err, decoded) {
             if(err) {
-                res.json({error: true});
+                res.json({error: false, expired: true});
             }else {
-                res.json({error: false});
+                res.json({error: false, expired: false});
             }
         });
     }
