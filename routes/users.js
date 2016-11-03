@@ -115,4 +115,16 @@ router.post('/login', function(req, res) {
     }
 });
 
+router.post('/verifyToken', function(req, res) {
+    if(req.body.token) {
+        jwt.verify(req.body.token, config.TOKEN_SECRET, function(err, decoded) {
+            if(err) {
+                res.json({error: true});
+            }else {
+                res.json({error: false});
+            }
+        });
+    }
+});
+
 module.exports = router;
