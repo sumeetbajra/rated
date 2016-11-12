@@ -20,7 +20,7 @@ router.post('/add', checkToken, function(req, res) {
 });
 
 router.get('/search/:q', function(req, res) {
-	Celebrity.find({fullName: {$regex: "^" + req.params.q, $options: 'i'}}).select('fullName', 'picture')
+	Celebrity.find({fullName: {$regex: "^" + req.params.q, $options: 'i'}}).select('fullName picture')
 		.limit(10)
        	.exec(function(err, docs) {
        		res.json(docs);
