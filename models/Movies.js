@@ -35,4 +35,4 @@ var Movies = new Schema({
 
 Movies.plugin(mongoosePaginate);
 
-module.exports =  mongoose.model('Movies', Movies);
+module.exports = mongoose.model('Movies', Movies);

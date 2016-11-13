@@ -81,6 +81,14 @@ router.post('/best', function(req, res) {
             res.json({error: false, res: docs.slice(0, 10)});
         }
     });
+});
+
+router.get('/search/:q', function(req, res) {   
+    Movies.find({title: {$regex: "^" + req.params.q, $options: 'i'}}).select('title year cast posterUrl').populate('cast.celebrityId', 'fullName')
+    .limit(5)
+    .exec(function(err, docs) {
+        res.json(docs);
+    });
 })
 
 module.exports = router;
