@@ -10,6 +10,7 @@ var users = require('./routes/users');
 var movies = require('./routes/movies');
 var celebrity = require('./routes/celebrity');
 var ratings = require('./routes/ratings');
+var categories = require('./routes/categories');
 
 var app = express();
 
@@ -52,6 +53,7 @@ app.use('/users', users);
 app.use('/movies', movies);
 app.use('/ratings', ratings);
 app.use('/celebrity', celebrity);
+app.use('/categories', categories);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -67,7 +69,7 @@ app.use(function(req, res, next) {
 if (app.get('env') === 'development') {
   app.use(function(err, req, res, next) {
     res.status(err.status || 500);
-    res.render('error', {
+    res.json({
       message: err.message,
       error: err
     });
@@ -78,7 +80,7 @@ if (app.get('env') === 'development') {
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
   res.status(err.status || 500);
-  res.render('error', {
+  res.json({
     message: err.message,
     error: {}
   });

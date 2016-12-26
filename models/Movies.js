@@ -14,18 +14,19 @@ var Ratings = new Schema({
 
 var Celebrities = new Schema({
     celebrityId: {type: String, ref: 'Celebrity'}
-})
+});
 
 var Movies = new Schema({
     movieId: ObjectId,
-    title: {type: String, validate: [validators.isLength(1, 60)]},
-    description: {type: String, validate: [validators.isLength(1, 1000)]},
-    year: {type: Number, validate: [validators.isLength(1, 4)]},
+    title: {type: String, required: [true, 'Movie title is required'], validate: [validators.isLength(1, 60)]},
+    description: {type: String, required: [true, 'Movie description is required'], validate: [validators.isLength(1, 1000)]},
+    year: {type: Number, required: [true, 'Movie year is required'], validate: [validators.isLength({message: 'Invalid movie year'}, 1, 4)]},
     director: [Celebrities],
     cast: [Celebrities],
-    duration: {type: Number, validate: [validators.isLength(1, 10)]},
-    trailer: {type: String},
-    posterUrl: {type: String},
+    category: { type: String, ref: 'Categories'},
+    duration: {type: Number, required: [true, 'Movie duration is required'], validate: [validators.isLength(1, 10)]},
+    trailer: {type: String, required: [true, 'Movie trailer is required']},
+    posterUrl: {type: String, required: [true, 'Movie poster is required']},
     coverUrl: {type: String},
     ratings: [Ratings],
     overallRating: {type: Number, default: 0},
