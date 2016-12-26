@@ -26,6 +26,39 @@ router.get('/all', checkToken, function(req, res) {
 		}
 		res.json({error: false, res: docs});
 	})
+});
+
+router.get('/:id', checkToken, function(req, res) {
+	Categories.find({_id: req.params.id}, function(err, docs) {
+		if(err) {
+			console.log(err);
+			res.json({error: true, msg: 'Something went wrong'});
+		}else {
+			res.json({error: false, res: docs});
+		}
+	})
+});
+
+router.put('/:id', checkToken, function(req, res) {
+	Categories.update({_id: req.params.id}, req.body, function(err, docs) {
+		if(err) {
+			console.log(err);
+			res.json({error: true, msg: 'Something went wrong'});
+		}else {
+			res.json({error: false, res: docs});
+		}
+	})
+});
+
+router.delete('/:id', checkToken, function(req, res) {
+	Categories.find({_id: req.params.id}).remove(function(err, docs) {
+		if(err) {
+			console.log(err);
+			res.json({error: true, msg: 'Something went wrong'});
+		}else {
+			res.json({error: false});
+		}
+	})
 })
 
 module.exports = router;
