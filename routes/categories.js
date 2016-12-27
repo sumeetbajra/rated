@@ -3,6 +3,7 @@ var router = express.Router();
 var checkToken = require('../utils/checkToken');
 
 var Categories = require('../models/Categories');
+var Movies = require('../models/Movies');
 var formatFormErrorMessage = require('../utils/formatFormErrorMessage');
 
 router.post('/add', function(req, res) {
@@ -18,7 +19,7 @@ router.post('/add', function(req, res) {
 	}
 });
 
-router.get('/all', checkToken, function(req, res) {
+router.get('/all', function(req, res) {
 	Categories.find({}, function(err, docs) {
 		if(err) {
 			console.log(err);
@@ -57,6 +58,17 @@ router.delete('/:id', checkToken, function(req, res) {
 			res.json({error: true, msg: 'Something went wrong'});
 		}else {
 			res.json({error: false});
+		}
+	})
+});
+
+router.get('/movies/:id', function(req, res) {
+	Movies.find({category: req.params.id}).populate('category').exec(function(err, docs) {
+		if(err) {
+			console.log(err);
+			res.json({error: true, msg: 'Something went wrong'});
+		}else {
+			res.json({error: false, res: docs});
 		}
 	})
 })
