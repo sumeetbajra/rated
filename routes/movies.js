@@ -13,7 +13,7 @@ router.post('/add', checkToken, function(req, res) {
             if(err) {
                 res.json({error: true, res: formatFormErrorMessage(err)});
             }else {
-                Movies.findOne({_id: doc._id}).populate('ratings.userId').populate('cast.celebrityId').populate('category._id').populate('director.celebrityId').exec(function(err, doc) {
+                Movies.findOne({_id: doc._id}).populate('ratings.userId').populate('cast.celebrityId').populate('category.categoryId').populate('director.celebrityId').exec(function(err, doc) {
                     res.json({error: false, res: doc});
                 });
             }
@@ -22,7 +22,7 @@ router.post('/add', checkToken, function(req, res) {
 });
 
 router.get('/all/:page', checkToken, function(req, res) {
-    Movies.paginate({}, {page: req.params.page, limit: 5, sort: {_id: '-1'}, populate: ['cast.celebrityId', 'director.celebrityId', 'category._id']}).then(function(docs) {
+    Movies.paginate({}, {page: req.params.page, limit: 5, sort: {_id: '-1'}, populate: ['cast.celebrityId', 'director.celebrityId', 'category.categoryId']}).then(function(docs) {
         res.json({error: false, res: docs});
     })
 });
@@ -40,7 +40,7 @@ router.delete('/:id', checkToken, function(req, res) {
 });
 
 router.get('/:id', function(req, res) {
-    Movies.findOne({_id: req.params.id}).populate('ratings.userId').populate('cast.celebrityId').populate('category').populate('director.celebrityId').exec(function(err, doc) {
+    Movies.findOne({_id: req.params.id}).populate('ratings.userId').populate('cast.celebrityId').populate('category.categoryId').populate('director.celebrityId').exec(function(err, doc) {
         if(err) {
             res.json({error: true, res: err});
         }else{
@@ -84,7 +84,7 @@ router.post('/best', function(req, res) {
     });
 });
 
-router.get('/search/:q', function(req, res) {   
+router.get('/search/:q', function(req, res) {
     Movies.find({title: {$regex: "^" + req.params.q, $options: 'i'}}).select('title year cast posterUrl').populate('cast.celebrityId', 'fullName')
     .limit(5)
     .exec(function(err, docs) {

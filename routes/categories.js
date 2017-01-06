@@ -63,7 +63,7 @@ router.delete('/:id', checkToken, function(req, res) {
 });
 
 router.get('/movies/:id', function(req, res) {
-	Movies.find({category: req.params.id}).populate('category').exec(function(err, docs) {
+	Movies.find({'category.categoryId': req.params.id}).populate('category.categoryId').exec(function(err, docs) {
 		if(err) {
 			console.log(err);
 			res.json({error: true, msg: 'Something went wrong'});
@@ -71,6 +71,28 @@ router.get('/movies/:id', function(req, res) {
 			res.json({error: false, res: docs});
 		}
 	})
-})
+});
+
+router.put('/addMovieCount/:id', checkToken, function(req, res) {
+	Categories.update({_id: req.params.id}, { $inc: { count: 1 }}).exec(function(err, doc) {
+		if(err) {
+			console.log(err);
+			res.json({error: true, msg: 'Something went wrong'});
+		}else {
+			res.json({error: false});
+		}
+	})
+});
+
+router.put('/subtractMovieCount/:id', checkToken, function(req, res) {
+	Categories.update({_id: req.params.id}, { $inc: { count: -1 }}).exec(function(err, doc) {
+		if(err) {
+			console.log(err);
+			res.json({error: true, msg: 'Something went wrong'});
+		}else {
+			res.json({error: false});
+		}
+	})
+});
 
 module.exports = router;

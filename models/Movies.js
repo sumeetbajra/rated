@@ -16,6 +16,10 @@ var Celebrities = new Schema({
     celebrityId: {type: String, ref: 'Celebrity'}
 });
 
+var Categories = new Schema({
+  categoryId: {type: String, ref: 'Categories'}
+});
+
 var Movies = new Schema({
     movieId: ObjectId,
     title: {type: String, required: [true, 'Movie title is required'], validate: [validators.isLength(1, 60)]},
@@ -23,7 +27,7 @@ var Movies = new Schema({
     year: {type: Number, required: [true, 'Movie year is required'], validate: [validators.isLength({message: 'Invalid movie year'}, 1, 4)]},
     director: [Celebrities],
     cast: [Celebrities],
-    category: { type: String, ref: 'Categories'},
+    category: [Categories],
     duration: {type: Number, required: [true, 'Movie duration is required'], validate: [validators.isLength(1, 10)]},
     trailer: {type: String, required: [true, 'Movie trailer is required']},
     posterUrl: {type: String, required: [true, 'Movie poster is required']},
@@ -31,7 +35,7 @@ var Movies = new Schema({
     ratings: [Ratings],
     overallRating: {type: Number, default: 0},
     ratingsCount: {type: Number, default: 0},
-    timestamp: {type: Date, default: Date.now}    
+    timestamp: {type: Date, default: Date.now}
 });
 
 Movies.plugin(mongoosePaginate);

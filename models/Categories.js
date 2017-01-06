@@ -6,6 +6,7 @@ var Schema = mongoose.Schema,
 
 var Categories = new Schema({
 	categoryId: ObjectId,
+	count: {type: Number, default: 0},
 	categoryName: {type: String, required: [true, 'Category Name is required'], validate: [validators.isLength({message: 'Category name is invalid'}, 1, 60)]},
 });
 
